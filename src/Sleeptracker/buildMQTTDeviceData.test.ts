@@ -3,7 +3,7 @@ import { buildMQTTDeviceData } from './buildMQTTDeviceData';
 import { Device } from './types/Device';
 
 const device = {
-  sleeptrackerProcessorID: 1241473,
+  sleeptrackerProcessorID: 1234567,
   modelID: 'STS60',
   mattressBrandName: 'Tempur-Pedic',
 } as Device;
@@ -31,7 +31,7 @@ describe(buildMQTTDeviceData.name, () => {
   it('falls back to the processor id when the API omits the name', () => {
     const { device: result } = buildMQTTDeviceData({ ...device, name: null as unknown as string });
 
-    expect(result.name).toEqual('Sleeptracker 1241473');
-    expect(safeId(result.name)).toEqual('sleeptracker_1241473');
+    expect(result.name).toEqual('Sleeptracker 1234567');
+    expect(safeId(result.name)).toEqual('sleeptracker_1234567');
   });
 });
