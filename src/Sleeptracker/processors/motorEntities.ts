@@ -14,6 +14,7 @@ interface MotorState {
 
 interface Cache {
   motorState?: MotorState;
+  covers?: Cover[];
 }
 
 type Command = { name: StringsKey; up: Commands; down: Commands; stop: Commands };
@@ -35,7 +36,10 @@ export const setupMotorEntities = async (
 ) => {
   const cache = entities as Cache;
 
-  if (cache.motorState) return;
+  if (cache.motorState) {
+    cache.covers?.forEach((cover) => cover.setOnline());
+    return;
+  }
 
   cache.motorState = {};
   const commands = [
@@ -45,7 +49,7 @@ export const setupMotorEntities = async (
     buildCommand(lumbar, 'MotorLumbar', Commands.MotorLumbarUp, Commands.MotorLumbarDown, Commands.MotorLumbarStop),
   ].filter(notEmpty);
 
-  for (const { name, up, down, stop } of commands) {
+  cache.covers = commands.map(({ name, up, down, stop }) => {
     const coverCommand = async (command: string) => {
       const motorState = cache.motorState!;
       const originalCommand = motorState.command || [];
@@ -55,6 +59,6 @@ export const setupMotorEntities = async (
       await sendAdjustableBaseCommand(newCommand, user);
       cache.motorState = {};
     };
-    new Cover(mqtt, deviceData, buildEntityConfig(getString(name), sideName), coverCommand).setOnline();
-  }
+    return new Cover(mqtt, deviceData, buildEntityConfig(getString(name), sideName), coverCommand).setOnline();
+  });
 };
