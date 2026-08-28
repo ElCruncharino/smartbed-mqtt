@@ -1,6 +1,5 @@
 import { Entity } from '@ha/base/Entity';
 import { IDeviceData } from '@ha/IDeviceData';
-import { Dictionary } from '@utils/Dictionary';
 import { DeviceInfoSensor } from '../entities/DeviceInfoSensor';
 import { HelloDataSensor } from '../entities/InfoSensor';
 import { Credentials } from '../options';
@@ -29,5 +28,5 @@ export type Bed = {
     headAngleTicksPerDegree: number;
     footAngleTicksPerDegree: number;
   };
-  entities: Entities & Dictionary<Entity>;
+  entities: Entities & Record<string, Entity>;
 };

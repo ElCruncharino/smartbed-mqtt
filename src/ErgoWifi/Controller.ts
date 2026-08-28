@@ -1,5 +1,4 @@
 import { IDeviceData } from '@ha/IDeviceData';
-import { Dictionary } from '@utils/Dictionary';
 import { Timer } from '@utils/Timer';
 import { intToBytes } from '@utils/intToBytes';
 import { loopWithWait } from '@utils/loopWithWait';
@@ -39,7 +38,7 @@ const commandPayload = (id: number, command: number) => {
 };
 
 export class Controller implements IController<number> {
-  cache: Dictionary<unknown> = {};
+  cache: Record<string, unknown> = {};
   private timer?: Timer;
   private lastCommands?: number[];
 

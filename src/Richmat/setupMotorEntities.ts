@@ -1,6 +1,6 @@
 import { Cover } from '@ha/Cover';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey } from '@utils/getString';
+import { StringsKey } from 'Strings/en';
 import { buildEntityConfig } from 'Common/buildEntityConfig';
 import { IController } from 'Common/IController';
 import { Commands } from './Commands';

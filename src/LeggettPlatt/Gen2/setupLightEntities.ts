@@ -1,6 +1,6 @@
 import { Light, LightState } from '@ha/Light';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { getString } from '@utils/getString';
+import Strings from 'Strings/en';
 import { IController } from 'Common/IController';
 import { Commands } from './Commands';
 
@@ -19,7 +19,7 @@ export const setupLightEntities = (
     {
       supportsBrightness: true,
       supportsRGB: true,
-      description: getString('UnderBedLights'),
+      description: Strings['UnderBedLights'],
     },
     async (state) => {
       const oldState: LightState = light.getState() || {};

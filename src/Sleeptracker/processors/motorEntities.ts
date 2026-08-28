@@ -1,5 +1,5 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey, getString } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 import { Cover } from '@ha/Cover';
 import { buildEntityConfig } from 'Sleeptracker/buildEntityConfig';
 import { Bed } from 'Sleeptracker/types/Bed';
@@ -59,6 +59,6 @@ export const setupMotorEntities = async (
       await sendAdjustableBaseCommand(newCommand, user);
       cache.motorState = {};
     };
-    return new Cover(mqtt, deviceData, buildEntityConfig(getString(name), sideName), coverCommand).setOnline();
+    return new Cover(mqtt, deviceData, buildEntityConfig(Strings[name], sideName), coverCommand).setOnline();
   });
 };

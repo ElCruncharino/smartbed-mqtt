@@ -1,6 +1,6 @@
 import { Button } from '@ha/Button';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey, getString } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 import { logError } from '@utils/logger';
 import { IController } from 'Common/IController';
 import { buildEntityConfig } from 'Common/buildEntityConfig';
@@ -36,7 +36,7 @@ export const setupPresetButtons = (
       try {
         await writeCommand(command, repeat && 100, repeat && 300);
       } catch (e) {
-        logError(`[Linak] Failed to write '${getString(name)}'`, e);
+        logError(`[Linak] Failed to write '${Strings[name]}'`, e);
       }
     }).setOnline();
   };

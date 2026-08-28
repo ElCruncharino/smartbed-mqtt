@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { getUnixEpoch } from '@utils/getUnixEpoch';
 import { logError } from '@utils/logger';
 import axios from 'axios';
@@ -12,7 +11,7 @@ interface AuthDetails {
   authorize: string;
   userId: number;
 }
-const authDetailsCache: Dictionary<AuthDetails> = {};
+const authDetailsCache: Record<string, AuthDetails> = {};
 
 export const getAuthDetails = async ({ email, password }: Credentials) => {
   const { host, authRequestUrl } = urls();

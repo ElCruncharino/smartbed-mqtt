@@ -1,5 +1,4 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { Dictionary } from '@utils/Dictionary';
 import { safeId } from '@utils/safeId';
 import { seconds } from '@utils/seconds';
 import { IDeviceData } from '../IDeviceData';
@@ -51,7 +50,7 @@ export class Entity implements IAvailable {
     this.mqtt.publish(discoveryTopic, discoveryMessage);
   }
 
-  protected discoveryState(): Dictionary<any> {
+  protected discoveryState(): Record<string, any> {
     return {
       availability_topic: this.availabilityTopic,
       payload_available: ONLINE,

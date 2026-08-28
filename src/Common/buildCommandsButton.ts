@@ -1,6 +1,6 @@
 import { Button } from '@ha/Button';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey, getString } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 import { logError } from '@utils/logger';
 import { IController } from './IController';
 import { buildEntityConfig } from './buildEntityConfig';
@@ -19,7 +19,7 @@ export const buildCommandsButton = <TCommand>(
     try {
       await writeCommands(commands);
     } catch (e) {
-      logError(`[${context}] Failed to write '${getString(name)}'`, e);
+      logError(`[${context}] Failed to write '${Strings[name]}'`, e);
     }
   }).setOnline();
 };

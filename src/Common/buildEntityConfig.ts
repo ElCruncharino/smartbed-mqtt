@@ -1,4 +1,4 @@
-import { StringsKey, getString } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 
 export const buildEntityConfig = (
   key: StringsKey,
@@ -6,7 +6,7 @@ export const buildEntityConfig = (
 ) => {
   if (typeof additionalConfig === 'string') additionalConfig = { category: additionalConfig };
   return {
-    description: getString(key),
+    description: Strings[key],
     ...(additionalConfig || {}),
   };
 };

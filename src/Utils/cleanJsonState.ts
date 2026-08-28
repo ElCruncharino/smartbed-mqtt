@@ -1,27 +1,26 @@
-import { Dictionary } from './Dictionary';
 import { joinNonEmpty } from './joinNonEmpty';
 
 export const cleanJsonState = (
-  state: Dictionary<any> | undefined,
+  state: Record<string, any> | undefined,
   fieldsToStrip = [] as string[],
   parentKey = ''
-): Dictionary<any> | null => {
+): Record<string, any> | null => {
   if (!state) return parentKey === '' ? {} : null;
 
   return Object.entries(state).reduce((acc, entry) => {
     handleEntry(acc, entry, fieldsToStrip, parentKey, state);
     return acc;
-  }, {} as Dictionary<any>);
+  }, {} as Record<string, any>);
 };
 
 const isoDateString = (value: number) => new Date(value * 1000).toISOString();
 
 const handleEntry = (
-  acc: Dictionary<any>,
+  acc: Record<string, any>,
   [key, value]: [key: string, value: any],
   fieldsToStrip: string[],
   parentKey: string,
-  state: Dictionary<any> | undefined
+  state: Record<string, any> | undefined
 ) => {
   const fqKey = joinNonEmpty('.', parentKey, key);
   if (key.endsWith('GmtString') || fieldsToStrip.includes(key) || fieldsToStrip.includes(fqKey)) return;
