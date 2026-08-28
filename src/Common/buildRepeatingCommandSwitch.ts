@@ -1,6 +1,6 @@
 import { Switch } from '@ha/Switch';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey, getString } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 import { logError } from '@utils/logger';
 import { buildEntityConfig } from './buildEntityConfig';
 import { IController } from './IController';
@@ -23,7 +23,7 @@ export const buildRepeatingCommandSwitch = <TCommand>(
       await writeCommand(command, count, waitTime);
       entity.setState(false);
     } catch (e) {
-      logError(`[${context}] Failed to write '${getString(name)}'`, e);
+      logError(`[${context}] Failed to write '${Strings[name]}'`, e);
     }
   }).setOnline());
 };

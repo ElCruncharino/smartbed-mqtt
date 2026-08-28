@@ -1,8 +1,7 @@
 import { IDeviceData } from '@ha/IDeviceData';
-import { Dictionary } from '@utils/Dictionary';
 
 export interface IDeviceCache {
-  cache: Dictionary<unknown>;
+  cache: Record<string, unknown>;
   deviceData: IDeviceData;
 }
 

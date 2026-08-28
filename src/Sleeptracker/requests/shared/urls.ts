@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { Credentials, Type } from '../../options';
 
 const getBaseUrl = (type: Type) => {
@@ -21,7 +20,7 @@ type UrlCache = {
   settingsBaseUrl: string;
 };
 
-const urlCacheByType: Dictionary<UrlCache> = {};
+const urlCacheByType: Record<string, UrlCache> = {};
 export const urls = ({ type }: Credentials) => {
   if (!type) type = 'tempur';
   let urlCache = urlCacheByType[type];

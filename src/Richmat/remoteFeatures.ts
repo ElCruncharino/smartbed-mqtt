@@ -1,7 +1,6 @@
-import { Dictionary } from '@utils/Dictionary';
 import { Features } from './Features';
 
-export const remoteFeatures: Dictionary<number> = {
+export const remoteFeatures: Record<string, number> = {
   AZRN:
     Features.PresetFlat |
     Features.PresetAntiSnore |

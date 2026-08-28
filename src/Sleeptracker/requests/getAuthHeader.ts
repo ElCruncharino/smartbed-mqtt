@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { getUnixEpoch } from '@utils/getUnixEpoch';
 import { logError } from '@utils/logger';
 import axios from 'axios';
@@ -13,7 +12,7 @@ interface AuthToken {
   expirationTimeSecs: number;
   token: string;
 }
-const authTokens: Dictionary<AuthToken> = {};
+const authTokens: Record<string, AuthToken> = {};
 
 export const getAuthHeader = async (credentials: Credentials) => {
   const { authHost, authRequestUrl } = urls(credentials);

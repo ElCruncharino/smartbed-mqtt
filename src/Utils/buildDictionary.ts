@@ -1,4 +1,3 @@
-import { Dictionary } from './Dictionary';
 
 export const buildDictionary = <TItem, TValue>(
   items: TItem[],
@@ -8,5 +7,5 @@ export const buildDictionary = <TItem, TValue>(
     const { key, value } = mapper(item);
     acc[key] = value;
     return acc;
-  }, {} as Dictionary<TValue>);
+  }, {} as Record<string, TValue>);
 };

@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { logError } from '@utils/logger';
 import axios from 'axios';
 import { Credentials } from '../options';
@@ -14,7 +13,7 @@ type Response = { statusCode: number; statusMessage: string; body: { snapshots: 
 export const sendAdjustableBaseCommand = async (
   bedControlCommand: Commands,
   credentials: Credentials,
-  additionalPayload: Dictionary<any> = {}
+  additionalPayload: Record<string, any> = {}
 ) => {
   const authHeader = await getAuthHeader(credentials);
   if (!authHeader) return [];

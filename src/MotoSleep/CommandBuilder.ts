@@ -1,4 +1,4 @@
-import { StringsKey } from '@utils/getString';
+import { StringsKey } from 'Strings/en';
 
 type CommandOptions = {
   category?: string;

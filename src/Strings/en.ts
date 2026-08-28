@@ -99,4 +99,5 @@ const strings = {
   MotorPillow: 'Pillow',
 };
 
+export type StringsKey = keyof typeof strings;
 export default strings;

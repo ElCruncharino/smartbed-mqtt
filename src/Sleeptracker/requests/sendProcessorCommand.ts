@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { logError } from '@utils/logger';
 import axios from 'axios';
 import { Credentials } from '../options';
@@ -9,7 +8,7 @@ import { urls } from './shared/urls';
 
 export const sendProcessorCommand = async (
   endpoint: string,
-  processorCommand: Dictionary<any>,
+  processorCommand: Record<string, any>,
   credentials: Credentials
 ) => {
   const authHeader = await getAuthHeader(credentials);

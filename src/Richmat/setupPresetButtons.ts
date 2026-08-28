@@ -1,5 +1,5 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { StringsKey } from '@utils/getString';
+import { StringsKey } from 'Strings/en';
 import { IController } from 'Common/IController';
 import { buildCommandsButton } from 'Common/buildCommandsButton';
 import { Commands } from './Commands';

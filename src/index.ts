@@ -1,5 +1,4 @@
 import { connectToMQTT } from '@mqtt/connectToMQTT';
-import { loadStrings } from '@utils/getString';
 import { logError, logWarn } from '@utils/logger';
 import { getType } from '@utils/options';
 import { connectToESPHome } from 'ESPHome/connectToESPHome';
@@ -37,8 +36,6 @@ process.on('uncaughtException', (err) => {
 });
 
 const start = async () => {
-  await loadStrings();
-
   const mqtt = await connectToMQTT();
 
   // http/udp
