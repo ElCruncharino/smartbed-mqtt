@@ -33,6 +33,8 @@ export class MQTTConnection extends EventEmitter implements IMQTTConnection {
   publish(topic: string, message: any) {
     if (message instanceof Object) {
       message = JSON.stringify(message);
+    } else if (typeof message === 'number' || typeof message === 'boolean') {
+      message = String(message);
     }
     this.client.publish(topic, message, { qos: 1 });
   }
