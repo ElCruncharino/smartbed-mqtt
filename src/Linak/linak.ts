@@ -1,5 +1,4 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { Dictionary } from '@utils/Dictionary';
 import { buildDictionary } from '@utils/buildDictionary';
 import { logError, logInfo } from '@utils/logger';
 import { BLEController } from 'BLE/BLEController';
@@ -38,7 +37,7 @@ export const linak = async (mqtt: IMQTTConnection, esphome: IESPConnection) => {
     }
 
     const { motorCount = 2 } = device;
-    const notifyHandles: Dictionary<number> = {};
+    const notifyHandles: Record<string, number> = {};
 
     const backCharacteristic = await getCharacteristic(
       '99fa0020-338a-1024-8a49-009c0215f78a',

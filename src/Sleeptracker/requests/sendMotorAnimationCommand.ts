@@ -1,4 +1,3 @@
-import { Dictionary } from '@utils/Dictionary';
 import { logError } from '@utils/logger';
 import axios from 'axios';
 import { Credentials } from '../options';
@@ -14,7 +13,7 @@ type Response = { statusCode: number; statusMessage: string };
 //   POST /processor/processorCommand
 //   { endpoint: "/command/v1/motor-animation",
 //     processorCommand: { statement: { type: "sequence", statements: [...] } } }
-export const sendMotorAnimationCommand = async (statements: Dictionary<any>[], credentials: Credentials) => {
+export const sendMotorAnimationCommand = async (statements: Record<string, any>[], credentials: Credentials) => {
   const authHeader = await getAuthHeader(credentials);
   if (!authHeader) return;
 

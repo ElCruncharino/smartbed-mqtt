@@ -1,7 +1,7 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
 import { IController } from 'Common/IController';
 import { Remote } from './Remote';
-import { StringsKey } from '@utils/getString';
+import { StringsKey } from 'Strings/en';
 import { Cover } from '@ha/Cover';
 import { buildEntityConfig } from 'Common/buildEntityConfig';
 import { Cancelable } from 'Common/Cancelable';

@@ -1,5 +1,4 @@
 import { BluetoothGATTService, Connection } from '@2colors/esphome-native-api';
-import { Dictionary } from '@utils/Dictionary';
 import { BLEAdvertisement } from './BLEAdvertisement';
 import { BLEDeviceInfo } from './BLEDeviceInfo';
 import { IBLEDevice } from './IBLEDevice';
@@ -10,7 +9,7 @@ export class BLEDevice implements IBLEDevice {
   private paired = false;
 
   private servicesList?: BluetoothGATTService[];
-  private serviceCache: Dictionary<BluetoothGATTService | null> = {};
+  private serviceCache: Record<string, BluetoothGATTService | null> = {};
 
   private deviceInfo?: BLEDeviceInfo;
 
@@ -99,7 +98,7 @@ export class BLEDevice implements IBLEDevice {
     if (!service) return undefined;
 
     const deviceInfo: BLEDeviceInfo = (this.deviceInfo = {});
-    const setters: Dictionary<(value: string) => void> = {
+    const setters: Record<string, (value: string) => void> = {
       '00002a24-0000-1000-8000-00805f9b34fb': (value: string) => (deviceInfo.modelNumber = value),
       '00002a25-0000-1000-8000-00805f9b34fb': (value: string) => (deviceInfo.serialNumber = value),
       '00002a26-0000-1000-8000-00805f9b34fb': (value: string) => (deviceInfo.firmwareRevision = value),

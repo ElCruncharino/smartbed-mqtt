@@ -2,7 +2,7 @@ import { Button } from '@ha/Button';
 import { NumberSlider } from '@ha/NumberSlider';
 import { Select } from '@ha/Select';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { getString } from '@utils/getString';
+import Strings from 'Strings/en';
 import { buildEntityConfig } from 'Common/buildEntityConfig';
 import { Commands, MassageZone } from './Commands';
 import { IController } from 'Common/IController';
@@ -33,11 +33,11 @@ export const setupMassageEntities = (
 
   if (!cache.massagePreset) {
     const massagePresets = [
-      getString('Off'),
-      getString('Ripple'),
-      getString('Wave'),
-      getString('Waves'),
-      getString('Pulse'),
+      Strings['Off'],
+      Strings['Ripple'],
+      Strings['Wave'],
+      Strings['Waves'],
+      Strings['Pulse'],
     ];
     cache.massagePreset = new Select(
       mqtt,

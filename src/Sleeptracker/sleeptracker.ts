@@ -1,5 +1,4 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { Dictionary } from '@utils/Dictionary';
 import { getSideNameFunc } from '@utils/getSideNameFunc';
 import { logError, logInfo } from '@utils/logger';
 import { seconds } from '@utils/seconds';
@@ -27,7 +26,7 @@ import { Bed } from './types/Bed';
 import { Commands } from './types/Commands';
 import { setupMotorEntities } from './processors/motorEntities';
 
-const beds: Dictionary<Bed> = {};
+const beds: Record<string, Bed> = {};
 
 export const sleeptracker = async (mqtt: IMQTTConnection) => {
   const users = getUsers();

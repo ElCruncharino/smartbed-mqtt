@@ -1,5 +1,4 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { Dictionary } from '@utils/Dictionary';
 import { logError, logInfo } from '@utils/logger';
 import { buildMQTTDeviceData } from 'Common/buildMQTTDeviceData';
 import { Controller } from './Controller';
@@ -11,7 +10,7 @@ import { setupPresetButtons } from './setupPresetButtons';
 import { setupSafetyLightsButton } from './setupSafetyLightsButton';
 import { setupMotorEntities } from './setupMotorEntities';
 
-const controllers: Dictionary<Controller> = {};
+const controllers: Record<string, Controller> = {};
 export const ergowifi = async (mqtt: IMQTTConnection) => {
   const users = getUsers();
   if (!users.length) return logInfo('[ErgoWifi] No users configured');
