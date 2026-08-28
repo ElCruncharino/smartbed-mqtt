@@ -1,3 +1,3 @@
-import { getString } from '@utils/getString';
+import Strings from 'Strings/en';
 
-export const massageWaveOptions = [getString('Off'), '1', '2', '3'];
+export const massageWaveOptions = [Strings['Off'], '1', '2', '3'];

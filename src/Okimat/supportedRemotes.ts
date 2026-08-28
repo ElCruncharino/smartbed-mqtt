@@ -1,7 +1,6 @@
-import { Dictionary } from '@utils/Dictionary';
 import { Remote } from './Remote';
 
-export const supportedRemotes: Dictionary<Remote> = {
+export const supportedRemotes: Record<string, Remote> = {
   '80608': {
     name: 'RFS ELLIPSE',
     commands: {

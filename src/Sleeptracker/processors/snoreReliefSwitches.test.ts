@@ -1,6 +1,5 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
 import { mocked, testDevice } from '@utils/testHelpers';
-import { loadStrings } from '@utils/getString';
 import { mock } from 'jest-mock-extended';
 import { Bed } from 'Sleeptracker/types/Bed';
 import { Controller } from 'Sleeptracker/types/Controller';
@@ -30,7 +29,6 @@ const commandHandlerFor = (topicSubstring: string) => {
 
 describe(processSnoreReliefSwitches.name, () => {
   beforeAll(async () => {
-    await loadStrings();
     jest.useFakeTimers();
   });
   beforeEach(jest.resetAllMocks);

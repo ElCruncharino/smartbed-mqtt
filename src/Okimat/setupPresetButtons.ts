@@ -3,7 +3,7 @@ import { IController } from 'Common/IController';
 import { buildCommandButton } from 'Common/buildCommandButton';
 import { buildRepeatingCommandSwitch } from 'Common/buildRepeatingCommandSwitch';
 import { Remote } from './Remote';
-import { getString, StringsKey } from '@utils/getString';
+import Strings, { StringsKey } from 'Strings/en';
 import { Button } from '@ha/Button';
 import { buildEntityConfig } from 'Common/buildEntityConfig';
 import { logError } from '@utils/logger';
@@ -27,7 +27,7 @@ export const buildSaveCommandButton = <TCommand>(
       await wait(500);
       await writeCommand(finishCommand);
     } catch (e) {
-      logError(`[Okimat] Failed to write '${getString(name)}'`, e);
+      logError(`[Okimat] Failed to write '${Strings[name]}'`, e);
     }
   }).setOnline();
 };

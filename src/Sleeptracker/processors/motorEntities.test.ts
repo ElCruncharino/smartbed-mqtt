@@ -1,7 +1,6 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
 import { mocked, testDevice } from '@utils/testHelpers';
 import { mock } from 'jest-mock-extended';
-import { loadStrings } from '@utils/getString';
 import { Bed } from 'Sleeptracker/types/Bed';
 import { Capability } from 'Sleeptracker/types/HelloData';
 import { Controller } from 'Sleeptracker/types/Controller';
@@ -35,7 +34,6 @@ const coverUniqueIds = () =>
 
 describe(setupMotorEntities.name, () => {
   beforeAll(async () => {
-    await loadStrings();
     jest.useFakeTimers();
   });
   beforeEach(jest.resetAllMocks);

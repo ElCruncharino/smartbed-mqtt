@@ -1,5 +1,4 @@
 import { IDeviceData } from '@ha/IDeviceData';
-import { Dictionary } from '@utils/Dictionary';
 import { Timer } from '@utils/Timer';
 import { loopWithWait } from '@utils/loopWithWait';
 import { IBLEDevice } from 'ESPHome/types/IBLEDevice';
@@ -11,12 +10,12 @@ import { deepArrayEquals } from '@utils/deepArrayEquals';
 import { logError } from '@utils/logger';
 
 export class BLEController<TCommand> extends EventEmitter implements IEventSource, IController<TCommand> {
-  cache: Dictionary<unknown> = {};
+  cache: Record<string, unknown> = {};
   get notifyNames() {
     return Object.keys(this.notifyHandles);
   }
   private timer?: Timer;
-  private notifyValues: Dictionary<Uint8Array> = {};
+  private notifyValues: Record<string, Uint8Array> = {};
   private disconnectTimeout?: NodeJS.Timeout;
   private lastCommands?: number[][];
 
@@ -25,7 +24,7 @@ export class BLEController<TCommand> extends EventEmitter implements IEventSourc
     private bleDevice: IBLEDevice,
     private handle: number,
     private commandBuilder: (command: TCommand) => number[],
-    private notifyHandles: Dictionary<number> = {},
+    private notifyHandles: Record<string, number> = {},
     private stayConnected: boolean = false
   ) {
     super();

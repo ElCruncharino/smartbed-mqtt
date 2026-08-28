@@ -1,5 +1,4 @@
 import { IDeviceData } from '@ha/IDeviceData';
-import { Dictionary } from '@utils/Dictionary';
 import { Timer } from '@utils/Timer';
 import { deepArrayEquals } from '@utils/deepArrayEquals';
 import { loopWithWait } from '@utils/loopWithWait';
@@ -8,7 +7,7 @@ import { Socket, createSocket } from 'dgram';
 import EventEmitter from 'events';
 
 export class Controller extends EventEmitter implements IController<number[]> {
-  cache: Dictionary<unknown> = {};
+  cache: Record<string, unknown> = {};
   socket: Socket;
   private timer?: Timer;
   private lastCommands?: number[][];

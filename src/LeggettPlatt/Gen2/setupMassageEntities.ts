@@ -1,6 +1,6 @@
 import { Select } from '@ha/Select';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { getString } from '@utils/getString';
+import Strings from 'Strings/en';
 import { IController } from 'Common/IController';
 import { Commands } from './Commands';
 import { massageOptions } from './massageOptions';
@@ -16,7 +16,7 @@ export const setupMassageEntities = (
       deviceData,
       {
         options: massageOptions,
-        description: getString('MassageHead'),
+        description: Strings['MassageHead'],
       },
       async (state) => {
         const index = massageOptions.indexOf(state);
@@ -32,7 +32,7 @@ export const setupMassageEntities = (
       deviceData,
       {
         options: massageOptions,
-        description: getString('MassageFoot'),
+        description: Strings['MassageFoot'],
       },
       async (state) => {
         const index = massageOptions.indexOf(state);
@@ -48,7 +48,7 @@ export const setupMassageEntities = (
       deviceData,
       {
         options: massageWaveOptions,
-        description: getString('MassageWave'),
+        description: Strings['MassageWave'],
       },
       async (state) => {
         const index = massageWaveOptions.indexOf(state);

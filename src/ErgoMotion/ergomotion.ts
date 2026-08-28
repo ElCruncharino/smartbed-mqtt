@@ -1,5 +1,4 @@
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
-import { Dictionary } from '@utils/Dictionary';
 import { logInfo } from '@utils/logger';
 import { buildMQTTDeviceData } from 'Common/buildMQTTDeviceData';
 import { Controller } from './Controller';
@@ -9,7 +8,7 @@ import { setupPresetButtons } from './setupPresetButtons';
 import { setupSafetyLightsButton } from './setupSafetyLightsButton';
 import { setupMotorEntities } from './setupMotorEntities';
 
-const controllers: Dictionary<Controller> = {};
+const controllers: Record<string, Controller> = {};
 export const ergomotion = async (mqtt: IMQTTConnection) => {
   const devices = getDevices();
   if (!devices.length) return logInfo('[ErgoMotion] No devices configured');
