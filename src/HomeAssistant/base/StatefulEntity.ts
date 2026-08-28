@@ -34,7 +34,11 @@ export class StatefulEntity<T> extends Entity implements IStateful<T> {
     if (state === null) {
       return this.setOffline();
     }
-    if (this.state === state) return this;
+    // publishes aren't retained, so availability must be reaffirmed even when unchanged
+    if (this.state === state) {
+      this.setOnline();
+      return this;
+    }
     this.state = state;
     this.sendState();
     this.setOnline();
