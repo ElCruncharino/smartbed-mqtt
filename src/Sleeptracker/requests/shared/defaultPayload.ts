@@ -8,7 +8,8 @@ type Context =
   | 'latestEnvironmentSensorData'
   | 'setSnoreRelief'
   | 'adjustableBaseControls'
-  | 'processorCommand';
+  | 'processorCommand'
+  | 'sleepSummarize';
 
 const contextMap = {
   session: 'getUserSession',
@@ -19,6 +20,7 @@ const contextMap = {
   setSnoreRelief: 'setSnoreRelief',
   adjustableBaseControls: 'adjustableBaseControls',
   processorCommand: 'adjustableBaseControls',
+  sleepSummarize: 'sleepDataSummaryBucket',
 };
 
 const getClientFields = (type?: Type) => {
