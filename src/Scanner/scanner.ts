@@ -46,7 +46,7 @@ export const scanner = async (esphome: IESPConnection) => {
     if (index === -1) index = deviceNames.findIndex((deviceName) => lowerName.startsWith(deviceName));
     if (index === -1) return;
 
-    logDevice(bleDevice);
+    void logDevice(bleDevice);
     const mapName = deviceNames.splice(index, 1)[0];
     const { connect, disconnect, pair, getDeviceInfo, getServices } = bleDevice;
     logInfo(`[Scanner] Connecting`);

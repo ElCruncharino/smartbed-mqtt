@@ -40,7 +40,7 @@ export const setupMotorEntities = (
   const updateMotorState = (main: keyof MotorState, command: string) => {
     const other = motorPairs[main];
     const motorState = cache.motorState!;
-    const { direction, canceled, ...motors } = motorState;
+    const { direction, canceled: _canceled, ...motors } = motorState;
     const moveMotors = command !== 'STOP';
     if (direction === command && motors[main] === moveMotors) return;
 

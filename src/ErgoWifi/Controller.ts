@@ -39,7 +39,7 @@ const commandPayload = (id: number, command: number) => {
 };
 
 export class Controller implements IController<number> {
-  cache: Dictionary<Object> = {};
+  cache: Dictionary<unknown> = {};
   private timer?: Timer;
   private lastCommands?: number[];
 
