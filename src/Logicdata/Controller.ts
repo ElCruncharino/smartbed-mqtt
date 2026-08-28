@@ -8,7 +8,7 @@ import { Socket, createSocket } from 'dgram';
 import EventEmitter from 'events';
 
 export class Controller extends EventEmitter implements IController<number[]> {
-  cache: Dictionary<Object> = {};
+  cache: Dictionary<unknown> = {};
   socket: Socket;
   private timer?: Timer;
   private lastCommands?: number[][];
