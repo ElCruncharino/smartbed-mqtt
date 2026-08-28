@@ -7,8 +7,8 @@ import { Bed } from '../types/Bed';
 import { Controller } from '../types/Controller';
 import { SnoreRelief } from '../types/SnoreRelief';
 
-let snoreRelief: SnoreRelief | null;
-let switchSet: SnoreReliefSwitchSet | null;
+let snoreRelief: SnoreRelief | null = null;
+let switchSet: SnoreReliefSwitchSet | null = null;
 
 const handleSnoreReliefChange = (credentials: Credentials) => async (newSnoreRelief: SnoreRelief) => {
   if (!switchSet) return;
@@ -31,5 +31,6 @@ export const processSnoreReliefSwitches = async (
   if (!cache.snoreReliefSwitchSet) {
     cache.snoreReliefSwitchSet = new SnoreReliefSwitchSet(mqtt, deviceData, sideName, handleSnoreReliefChange(user));
   }
+  switchSet = cache.snoreReliefSwitchSet;
   cache.snoreReliefSwitchSet.setState(snoreRelief);
 };
