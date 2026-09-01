@@ -1,3 +1,4 @@
+import { Button } from '@ha/Button';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
 import { getSideNameFunc } from '@utils/getSideNameFunc';
 import { logError, logInfo } from '@utils/logger';
@@ -143,6 +144,18 @@ export const sleeptracker = async (mqtt: IMQTTConnection) => {
       if (environmentSensors) await processEnvironmentSensors(mqtt, bed);
     }
   };
+  for (const bed of Object.values(beds)) {
+    const cache = bed.entities as { refreshNow?: Button };
+    if (!cache.refreshNow) {
+      cache.refreshNow = new Button(
+        mqtt,
+        bed.deviceData,
+        { description: 'Refresh Now', category: 'diagnostic' },
+        async () => void (await refreshDeviceData())
+      );
+    }
+  }
+
   await refreshDeviceData();
   setInterval(refreshDeviceData, seconds(getRefreshFrequency()));
 };
