@@ -43,9 +43,9 @@ export type Snapshot = {
   safetyLightOn: boolean;
   side: 0 | 1;
   fan?: FanState;
+  timeLastActuatorMovement?: number;
+  timeLastMassageActive?: number;
 };
 /*
-    "timeIsSet": true,
-    "timeLastActuatorMovement": 1676790911,
-    "timeLastMassageActive": 1676791742
+    "timeIsSet": true
 */

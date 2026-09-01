@@ -9,6 +9,7 @@ import { HelloDataSensor } from './entities/InfoSensor';
 import { SleepSensorInfoSensor } from './entities/SensorMapInfoSensor';
 import { getRefreshFrequency, getUsers } from './options';
 import { processBedPositionSensors } from './processors/bedPositionSensors';
+import { processLastActivitySensors } from './processors/lastActivitySensors';
 import { processEnvironmentSensors } from './processors/environmentSensors';
 import { processFanEntities } from './processors/fanEntities';
 import { setupMassageButtons } from './processors/massageButtons';
@@ -131,6 +132,7 @@ export const sleeptracker = async (mqtt: IMQTTConnection) => {
           if (!snapshot) continue;
 
           await processBedPositionSensors(mqtt, bed, controller, snapshot);
+          await processLastActivitySensors(mqtt, bed, controller, snapshot);
           await processMassageSensors(mqtt, bed, controller, snapshot);
 
           await processSafetyLightSwitches(mqtt, bed, controller, snapshot);
