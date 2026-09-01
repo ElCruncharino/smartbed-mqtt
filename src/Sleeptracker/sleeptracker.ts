@@ -1,6 +1,7 @@
 import { Button } from '@ha/Button';
 import { IMQTTConnection } from '@mqtt/IMQTTConnection';
 import { getSideNameFunc } from '@utils/getSideNameFunc';
+import { LastEventTimestampSensor } from './entities/LastEventTimestampSensor';
 import { logError, logInfo } from '@utils/logger';
 import { seconds } from '@utils/seconds';
 import { buildEntityConfig } from 'Sleeptracker/buildEntityConfig';
@@ -142,6 +143,18 @@ export const sleeptracker = async (mqtt: IMQTTConnection) => {
         }
       }
       if (environmentSensors) await processEnvironmentSensors(mqtt, bed);
+
+      const cache = bed.entities as { lastRefreshed?: LastEventTimestampSensor };
+      if (!cache.lastRefreshed) {
+        cache.lastRefreshed = new LastEventTimestampSensor(mqtt, bed.deviceData, {
+          description: 'Last Refreshed',
+          category: 'diagnostic',
+        });
+      }
+      // Unlike every other sensor here, this must publish on every single cycle even
+      // when nothing else changed - it's how an automation confirms a Refresh Now
+      // press actually completed, rather than assuming a fixed delay was enough.
+      cache.lastRefreshed.setEpochSeconds(Date.now() / 1000);
     }
   };
   for (const bed of Object.values(beds)) {
