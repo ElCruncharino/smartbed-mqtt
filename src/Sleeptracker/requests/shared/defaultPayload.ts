@@ -30,7 +30,8 @@ const getClientFields = (type?: Type) => {
       return { clientID: 'sleeptracker-android', clientVersion: '6.5.15' };
     case 'tempur':
     default:
-      return { clientID: 'sleeptracker-android-tsi', clientVersion: '1.11.5' };
+      // Official Horizon app (3.6.2) sends "H-" + its version as clientVersion.
+      return { clientID: 'sleeptracker-android-tsi', clientVersion: 'H-3.6.2' };
   }
 };
 export const buildDefaultPayload = (context: Context, { type }: Credentials) => ({
