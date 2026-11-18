@@ -1,5 +1,9 @@
 ## Unreleased
 
+**Bug Fixes**
+
+- (Sleeptracker) Send the Horizon app version so cloud requests match the current app
+
 **New Features**
 
 - (Sleeptracker) Add Wave Form™ massage controls (per-side select with duration)
