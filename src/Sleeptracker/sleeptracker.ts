@@ -31,89 +31,98 @@ import { setupMotorEntities } from './processors/motorEntities';
 
 const beds: Record<string, Bed> = {};
 
+// Re-read the bed and sleep sensor list every N cycles, so sensors that were
+// missing at startup (or added later) show up without restarting the add-on.
+const DISCOVERY_EVERY_N_CYCLES = 10;
+
 export const sleeptracker = async (mqtt: IMQTTConnection) => {
   const users = getUsers();
   if (!users.length) return logInfo('[Sleeptracker] No users configured');
-  for (const user of users) {
-    const devices = await getDevices(user);
-    if (devices.length === 0) {
-      logError('[Sleeptracker] Could not load devices');
-      continue;
-    }
-    for (const device of devices) {
-      const { sleeptrackerProcessorID: processorId } = device;
-      let bed = beds[processorId];
 
-      const helloData = await getHelloData(processorId, user);
-      if (!helloData) {
-        logError('[Sleeptracker] Could not load helloData');
+  // Safe to re-run: a bed is only created the first time it is seen, and a
+  // controller is only added once.
+  const discoverBeds = async () => {
+    for (const user of users) {
+      const devices = await getDevices(user);
+      if (devices.length === 0) {
+        logError('[Sleeptracker] Could not load devices');
         continue;
       }
+      for (const device of devices) {
+        const { sleeptrackerProcessorID: processorId } = device;
+        let bed = beds[processorId];
 
-      if (!bed) {
-        const {
-          baseSmartCableSupported: isSmartBed,
-          powerBase: { antiSnorePresetSupported, headAngleTicksPerDegree, footAngleTicksPerDegree },
-        } = device;
-        const deviceData = buildMQTTDeviceData(device);
-        bed = beds[processorId] = {
-          processorId,
-          deviceData,
-          primaryUser: user,
-          controllers: [],
-          sensors: [],
-          supportedFeatures: {
-            smartBedControls: isSmartBed,
-            antiSnorePreset: antiSnorePresetSupported,
-            environmentSensors: helloData.productFeatures.includes('env_sensors'),
-            motors: helloData.productFeatures.includes('motors'),
-            fanController: helloData.productFeatures.includes('fan_controller'),
-          },
-          data: { headAngleTicksPerDegree, footAngleTicksPerDegree },
-          entities: {
-            deviceInfo: new DeviceInfoSensor(mqtt, deviceData).setState(device),
-            helloData: new HelloDataSensor(mqtt, deviceData).setState(helloData),
-          },
-        };
-      }
-      const capabilities = helloData.motorMeta.capabilities;
-      const sleepSensors = await getSleepSensors(bed.processorId, user);
-      const sideNameFunc = getSideNameFunc(sleepSensors, (s) => s.unitNumber);
-      for (const sleepSensor of sleepSensors) {
-        const { unitNumber: side } = sleepSensor;
-        bed.sensors[side] = sleepSensor;
-
-        const sideName = sideNameFunc(sleepSensor);
-        const entityKey = `sleepSensor.${sideName}`;
-        let sleepSensorInfo = bed.entities[entityKey] as SleepSensorInfoSensor;
-        if (!sleepSensorInfo) {
-          sleepSensorInfo = bed.entities[entityKey] = new SleepSensorInfoSensor(
-            mqtt,
-            bed.deviceData,
-            buildEntityConfig('Sleep Sensor', sideName)
-          )
-            .setState(sleepSensor)
-            .setOnline();
+        const helloData = await getHelloData(processorId, user);
+        if (!helloData) {
+          logError('[Sleeptracker] Could not load helloData');
+          continue;
         }
-        if (sleepSensor.self) {
-          bed.sensors[side] = { ...sleepSensor, user };
-          sleepSensorInfo.setState(sleepSensor);
-          const capability =
-            capabilities.length === 1 ? capabilities[0] : capabilities.find((c) => c.side === sleepSensor.unitNumber);
-          const sideNameFunc = getSideNameFunc(capabilities, (c) => c.side);
-          if (!capability || bed.controllers.find((s) => s.side === capability.side)) continue;
 
-          bed.controllers.push({
-            user,
-            side: capability.side,
-            sideName: sideNameFunc(capability),
-            capability,
-            entities: {},
-          });
+        if (!bed) {
+          const {
+            baseSmartCableSupported: isSmartBed,
+            powerBase: { antiSnorePresetSupported, headAngleTicksPerDegree, footAngleTicksPerDegree },
+          } = device;
+          const deviceData = buildMQTTDeviceData(device);
+          bed = beds[processorId] = {
+            processorId,
+            deviceData,
+            primaryUser: user,
+            controllers: [],
+            sensors: [],
+            supportedFeatures: {
+              smartBedControls: isSmartBed,
+              antiSnorePreset: antiSnorePresetSupported,
+              environmentSensors: helloData.productFeatures.includes('env_sensors'),
+              motors: helloData.productFeatures.includes('motors'),
+              fanController: helloData.productFeatures.includes('fan_controller'),
+            },
+            data: { headAngleTicksPerDegree, footAngleTicksPerDegree },
+            entities: {
+              deviceInfo: new DeviceInfoSensor(mqtt, deviceData).setState(device),
+              helloData: new HelloDataSensor(mqtt, deviceData).setState(helloData),
+            },
+          };
+        }
+        const capabilities = helloData.motorMeta.capabilities;
+        const sleepSensors = await getSleepSensors(bed.processorId, user);
+        const sideNameFunc = getSideNameFunc(sleepSensors, (s) => s.unitNumber);
+        for (const sleepSensor of sleepSensors) {
+          const { unitNumber: side } = sleepSensor;
+          bed.sensors[side] = sleepSensor;
+
+          const sideName = sideNameFunc(sleepSensor);
+          const entityKey = `sleepSensor.${sideName}`;
+          let sleepSensorInfo = bed.entities[entityKey] as SleepSensorInfoSensor;
+          if (!sleepSensorInfo) {
+            sleepSensorInfo = bed.entities[entityKey] = new SleepSensorInfoSensor(
+              mqtt,
+              bed.deviceData,
+              buildEntityConfig('Sleep Sensor', sideName)
+            )
+              .setState(sleepSensor)
+              .setOnline();
+          }
+          if (sleepSensor.self) {
+            bed.sensors[side] = { ...sleepSensor, user };
+            sleepSensorInfo.setState(sleepSensor);
+            const capability =
+              capabilities.length === 1 ? capabilities[0] : capabilities.find((c) => c.side === sleepSensor.unitNumber);
+            const sideNameFunc = getSideNameFunc(capabilities, (c) => c.side);
+            if (!capability || bed.controllers.find((s) => s.side === capability.side)) continue;
+
+            bed.controllers.push({
+              user,
+              side: capability.side,
+              sideName: sideNameFunc(capability),
+              capability,
+              entities: {},
+            });
+          }
         }
       }
     }
-  }
+  };
 
   const refreshDeviceData = async () => {
     for (const bed of Object.values(beds)) {
@@ -157,18 +166,32 @@ export const sleeptracker = async (mqtt: IMQTTConnection) => {
       cache.lastRefreshed.setEpochSeconds(Date.now() / 1000);
     }
   };
-  for (const bed of Object.values(beds)) {
-    const cache = bed.entities as { refreshNow?: Button };
-    if (!cache.refreshNow) {
-      cache.refreshNow = new Button(
-        mqtt,
-        bed.deviceData,
-        { description: 'Refresh Now', category: 'diagnostic' },
-        async () => void (await refreshDeviceData())
-      );
-    }
-  }
 
-  await refreshDeviceData();
-  setInterval(refreshDeviceData, seconds(getRefreshFrequency()));
+  const ensureRefreshButtons = () => {
+    for (const bed of Object.values(beds)) {
+      const cache = bed.entities as { refreshNow?: Button };
+      if (!cache.refreshNow) {
+        cache.refreshNow = new Button(
+          mqtt,
+          bed.deviceData,
+          { description: 'Refresh Now', category: 'diagnostic' },
+          async () => void (await refreshDeviceData())
+        );
+      }
+    }
+  };
+
+  let cycle = 0;
+  const runCycle = async () => {
+    // Keep retrying discovery until a bed is found, then re-read it periodically.
+    if (Object.keys(beds).length === 0 || cycle % DISCOVERY_EVERY_N_CYCLES === 0) {
+      await discoverBeds();
+    }
+    cycle++;
+    ensureRefreshButtons();
+    await refreshDeviceData();
+  };
+
+  await runCycle();
+  setInterval(() => void runCycle(), seconds(getRefreshFrequency()));
 };
